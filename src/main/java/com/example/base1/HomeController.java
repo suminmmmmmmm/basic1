@@ -3,11 +3,13 @@ package com.example.base1;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
     private int count;
+
 
     public HomeController() {
         count = -1;
@@ -38,5 +40,13 @@ public class HomeController {
          count++;
         return count;
     }
-    
+
+    @GetMapping("/home/plus")
+    @ResponseBody //아래 메서드를 실행한 후 그 리턴값을 응답으로 삼아줘
+    //매개변수 넘김
+    //http://localhost:8080/home/plus?a=10&b=20
+    public int plus(@RequestParam(defaultValue = "0") int a, @RequestParam(defaultValue = "0") int b) {
+
+        return a+b;
+    }
 }
