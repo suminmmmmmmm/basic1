@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
+    private int count;
+
+    public HomeController() {
+        count = -1;
+    }
      @GetMapping("/home/main")
      @ResponseBody //아래 메서드를 실행한 후 그 리턴값을 응답으로 삼아줘
     public String showHome() {
@@ -25,5 +30,13 @@ public class HomeController {
     public String showHome3() {
         return "스프링부트는 획기적이다.";
     }
+
+    @GetMapping("/home/increase")
+    @ResponseBody //아래 메서드를 실행한 후 그 리턴값을 응답으로 삼아줘
+    public int increase() {
+
+         count++;
+        return count;
+    }
+    
 }
- 
