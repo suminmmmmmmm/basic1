@@ -4,6 +4,7 @@ package com.example.base1;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,10 +17,11 @@ import static java.awt.AWTEventMulticaster.add;
 @Controller
 public class HomeController {
     private int count;
-
+    private List<Person> people;
 
     public HomeController() {
         count = -1;
+        people = new ArrayList<>();
     }
      @GetMapping("/home/main")
      @ResponseBody //아래 메서드를 실행한 후 그 리턴값을 응답으로 삼아줘
@@ -203,11 +205,57 @@ public class HomeController {
             add(2);
             add(3);
         }});
-        
+
         List<Car2> list =new ArrayList<>();
         list.add(car1);
         list.add(car2);
         return list;
     }
- 
+
+
+    @GetMapping("/addPerson")
+    @ResponseBody
+    public String addPerson(@RequestParam String name, @RequestParam int age) {
+        Person p = new Person(name, age);
+        System.out.println(p);
+
+        people.add(p);
+
+        // JDK 17 OK
+        return "%d번 사람이 추가되었습니다.".formatted(p.getId());
+        // 또는: return String.format("%d번 사람이 추가되었습니다.", p.getId());
+    }
+
+    @GetMapping("/home/people")
+    @ResponseBody
+    public List <Person> people() {
+
+        return people;
+    }
+
+    @AllArgsConstructor
+    @ToString
+    @Getter
+    @Setter
+    class Person{
+        private static  int lastId;
+
+        private final int id;
+        private final String name; // 인스턴스 필드
+        private final int age;
+
+        static {
+            lastId=0;
+        }
+        public Person(String name, int age) {
+            this(++lastId, name,age);
+        }
+
+
+//        public Person(int id,String name,int age) {
+//            this.name = name;
+//            this.age = age;
+//            this.id = id;
+//        }
+    }
 }
